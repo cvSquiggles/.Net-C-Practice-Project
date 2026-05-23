@@ -1,0 +1,6 @@
+# Ignore directories
+HelloWorld/obj/Debug
+HelloWorld/bin/Debug
+
+
+# Ignore files
