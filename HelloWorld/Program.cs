@@ -22,22 +22,19 @@ namespace HelloWorld
                 Author = "James Bond",
                 PublicationYear = 1972
             };
-            
-            Console.WriteLine(firstBook.Author);
-            Console.WriteLine("---------------------");
 
             SqliteDBTools dbTool = new SqliteDBTools();
 
-            dbTool.insertBook("Die Another Day", "James Bond", 1972);
-            dbTool.insertBook("Live and Let Die", "James Bond", 1984);
+            //dbTool.insertBook("Die Another Day", "James Bond", 1972);
+            //dbTool.insertBook("Live and Let Die", "James Bond", 1984);
 
-            List<(string title, int pubYear)> queryResult = dbTool.selectByAuthor("James Bond");
+            List<(string Title, string Author, int PublicationYear)> queryResult = dbTool.SelectAllBooks();
 
-            for(int i = 0; i < queryResult.Count; i++)
+            for(int i = 0; i < queryResult.Count(); i++)
             {
+                Console.WriteLine("*");
                 Console.WriteLine(queryResult[i]);
             }
-
         }
     }
 }
