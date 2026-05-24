@@ -1,29 +1,14 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using HelloWorld.Models;
+using HelloWorld.Data;
+using System.Security.Cryptography.X509Certificates;
+using System.Runtime.CompilerServices;
 
 namespace HelloWorld
 {
 
-    public class Book
-    {
-        public string Title{get; set;}
-
-        public string Author{get; set;}
-
-        public int PublicationYear{get; set;} 
-
-        public Book()
-        {
-            if(Title == null)
-            {
-                Title = "";
-            }
-            if(Author == null)
-            {
-                Author = "";
-            }
-        }
-    }
+    
 
     internal class Program
     {
@@ -39,6 +24,20 @@ namespace HelloWorld
             };
             
             Console.WriteLine(firstBook.Author);
+            Console.WriteLine("---------------------");
+
+            SqliteDBTools dbTool = new SqliteDBTools();
+
+            dbTool.insertBook("Die Another Day", "James Bond", 1972);
+            dbTool.insertBook("Live and Let Die", "James Bond", 1984);
+
+            List<(string title, int pubYear)> queryResult = dbTool.selectByAuthor("James Bond");
+
+            for(int i = 0; i < queryResult.Count; i++)
+            {
+                Console.WriteLine(queryResult[i]);
+            }
+
         }
     }
 }
