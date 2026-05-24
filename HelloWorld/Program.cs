@@ -5,6 +5,7 @@ using HelloWorld.Data;
 using System.Security.Cryptography.X509Certificates;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
 
 namespace HelloWorld
 {
@@ -38,6 +39,9 @@ namespace HelloWorld
             //}
 
             var library = new Library();
+            library.InsertBook("Die Another Day", "James Bond", "James Bond refuses to die on THIS day.", 1972, "Thriller");
+            library.InsertBook("Casino Royale", "James Bond", "James Bond goes to the casino hoping to win big.", 1977, "Thriller");
+
             List<Book> searchResult = library.SelectByAuthor("James Bond");
 
             for (int i = 0; i < searchResult.Count(); i++)
