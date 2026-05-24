@@ -4,6 +4,7 @@ using HelloWorld.Models;
 using HelloWorld.Data;
 using System.Security.Cryptography.X509Certificates;
 using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace HelloWorld
 {
@@ -23,17 +24,26 @@ namespace HelloWorld
                 PublicationYear = 1972
             };
 
-            SqliteDBTools dbTool = new SqliteDBTools();
+            //SqliteDBTools dbTool = new SqliteDBTools();
 
             //dbTool.insertBook("Die Another Day", "James Bond", 1972);
             //dbTool.insertBook("Live and Let Die", "James Bond", 1984);
 
-            List<(string Title, string Author, int PublicationYear)> queryResult = dbTool.SelectAllBooks();
+            //List<(string Title, string Author, int PublicationYear)> queryResult = dbTool.SelectAllBooks();
 
-            for(int i = 0; i < queryResult.Count(); i++)
+            //for(int i = 0; i < queryResult.Count(); i++)
+            //{
+            //    Console.WriteLine("*");
+            //    Console.WriteLine(queryResult[i]);
+            //}
+
+            var library = new Library();
+            List<Book> searchResult = library.SelectByAuthor("James Bond");
+
+            for (int i = 0; i < searchResult.Count(); i++)
             {
-                Console.WriteLine("*");
-                Console.WriteLine(queryResult[i]);
+                Console.WriteLine(searchResult[i]);
+                Console.WriteLine("-----------------------");
             }
         }
     }

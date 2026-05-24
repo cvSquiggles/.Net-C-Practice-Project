@@ -1,9 +1,10 @@
-using System.IO.MemoryMappedFiles;
-using HelloWorld.Models;
 using Microsoft.Data.Sqlite;
 
 namespace HelloWorld.Data;
 
+//Entity framework override for Sqlite
+//protected override void OnConfiguring(DbContextOptionsBuilder options)
+//    => options.UseSqlite("Data Source=customer.db");
 
 public class SqliteDBTools()
 {
