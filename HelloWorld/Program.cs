@@ -1,31 +1,35 @@
-﻿Console.WriteLine("Hello, Worldzzz!");
+﻿using Microsoft.Data.Sqlite;
 
-List<string> myGroceryList = ["apple", "milk"];
+//Define table connection
+string connectionString = "Data Source=SqliteDB.db";
 
+using (var connection = new SqliteConnection(connectionString))
+{
+    connection.Open();
+    //just one simple table for now, probably do something more interesting like author table separate with foreign key in book table
+    //var createTableBooks = connection.CreateCommand();
+    //createTableBooks.CommandText = "CREATE TABLE IF NOT EXISTS Books (Id INTEGER PRIMARY KEY, Title TEXT, Author TEXT, PublicationYear INTEGER)";
+    //createTableBooks.ExecuteNonQuery();
 
-IEnumerable<string> ieString = myGroceryList;
+    //Populate table with some entries
+    // var insertCmd = connection.CreateCommand();
+    // insertCmd.CommandText = "INSERT INTO Books (Title, Author, PublicationYear) VALUES ($title, $author, $publicationYear)";
+    // insertCmd.Parameters.AddWithValue("$title", "Project Hail Mary");
+    // insertCmd.Parameters.AddWithValue("$author", "Andy Weir");
+    // insertCmd.Parameters.AddWithValue("$publicationYear", "2020");
+    // insertCmd.ExecuteNonQuery();
 
-//foreach(string x in ieString)
-//{
-    //Console.WriteLine(x);
-//}
-
-string[,,] multidimensionalArray = {
-    
+    //Select statement
+    var selectCmd = connection.CreateCommand();
+    selectCmd.CommandText = "SELECT Title FROM Books";
+    using (var reader = selectCmd.ExecuteReader())
+    {
+        while (reader.Read())
         {
-            {"apple", "2 Dollars"}, 
-            {"bananas", "3 Dollars"}
-        },
-        {
-            {"milk", "Free with purchase of soda"}, 
-            {"soda", "9 Dollars"}
+            var title = reader.GetString(0);
+            Console.WriteLine($"Found book titled: {title}");
         }
-    };
+    }
 
-//Console.WriteLine(multidimensionalArray[1,0,1]);
-
-Dictionary<string, decimal> groceryPrices = new Dictionary<string, decimal>();
-
-groceryPrices["Cheese"] = 5.29m;
-
-Console.WriteLine(groceryPrices["Cheese"]);
+    connection.Close();
+}
