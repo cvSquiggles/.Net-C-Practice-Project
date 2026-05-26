@@ -1,6 +1,7 @@
 # Ignore directories
 HelloWorld/obj/Debug/
 HelloWorld/bin/Debug/
+HelloWorld/Logs/*
 
 
 # Ignore files

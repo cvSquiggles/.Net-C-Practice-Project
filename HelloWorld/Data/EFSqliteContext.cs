@@ -106,8 +106,7 @@ public class Library
         }
         catch (KeyNotFoundException e)
         {
-            string logName = "log"+DateTime.Now.ToShortDateString()+".txt";
-            logName = logName.Replace("/", "-");
+            string logName = "./Logs/log"+DateTime.Now.ToShortDateString().Replace("/", "-")+".txt";
             //Write error output to log.txt
             using StreamWriter openFile = new(logName, append: true);
             openFile.WriteLine(DateTime.Now + ": " + e + "\n");
