@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Configuration;
 
 namespace HelloWorld
 {
@@ -18,6 +19,9 @@ namespace HelloWorld
 
         static void Main(string[] args)
         {
+            IConfiguration config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("AppSettings.json").Build();
+            //Build AppSettings.json configuration
+
             Book firstBook = new Book()
             {
                 Title = "Die Another Day",
@@ -25,7 +29,14 @@ namespace HelloWorld
                 PublicationYear = 1972
             };
 
-            //SqliteDBTools dbTool = new SqliteDBTools();
+            SqliteDBTools dbTool = new SqliteDBTools(config);
+
+            List<(string Title, string Author, int PublicationYear)> sqlSearchResult = dbTool.SelectAllBooks();
+
+            for (int i = 0; i < sqlSearchResult.Count(); i++)
+            {
+                Console.WriteLine("Manual search result: " + sqlSearchResult[i]);
+            }
 
             //dbTool.insertBook("Die Another Day", "James Bond", 1972);
             //dbTool.insertBook("Live and Let Die", "James Bond", 1984);
@@ -39,13 +50,14 @@ namespace HelloWorld
             //}
 
             var library = new Library();
-            library.InsertGenre("Film-Adaptation");
+            //library.InsertGenre("Film-Adaptation");
 
             //library.InsertBook("Die Another Day", "James Bond", "James Bond refuses to die on THIS day.", 1972, "Thriller");
             //library.InsertBook("Casino Royale", "James Bond", "James Bond goes to the casino hoping to win big.", 2007, "Film-Adaptation");
 
             List<Book> searchResult = library.SelectByAuthor("James Bond");
 
+            Console.WriteLine("-----------------------");
             for (int i = 0; i < searchResult.Count(); i++)
             {
                 Console.WriteLine(searchResult[i]);

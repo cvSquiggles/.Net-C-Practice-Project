@@ -59,7 +59,7 @@ public class Library
         else
         {
             context.Book.Add(book);
-            return context.SaveChanges(); 
+            return context.SaveChanges();
         }
     }
 
