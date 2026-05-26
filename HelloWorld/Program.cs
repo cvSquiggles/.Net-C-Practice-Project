@@ -39,8 +39,10 @@ namespace HelloWorld
             //}
 
             var library = new Library();
-            library.InsertBook("Die Another Day", "James Bond", "James Bond refuses to die on THIS day.", 1972, "Thriller");
-            library.InsertBook("Casino Royale", "James Bond", "James Bond goes to the casino hoping to win big.", 1977, "Thriller");
+            library.InsertGenre("Film-Adaptation");
+
+            //library.InsertBook("Die Another Day", "James Bond", "James Bond refuses to die on THIS day.", 1972, "Thriller");
+            //library.InsertBook("Casino Royale", "James Bond", "James Bond goes to the casino hoping to win big.", 2007, "Film-Adaptation");
 
             List<Book> searchResult = library.SelectByAuthor("James Bond");
 

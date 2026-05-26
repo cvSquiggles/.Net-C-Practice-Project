@@ -1,3 +1,5 @@
+
+
 namespace HelloWorld.Models;
 public class Book
 {
@@ -10,6 +12,6 @@ public class Book
     public Genre Genre { get; set; } = null!; //Navigation proprty for EF
     public override string ToString()
     {
-        return $"{Title}, {Author}, {PublicationYear}, Synopsis: {Description}";
+        return $"{Title}, {Author}, {PublicationYear}, Genre: {Genre?.Name ?? "Unknown Genre"}, Synopsis: {Description}";
     }
 }

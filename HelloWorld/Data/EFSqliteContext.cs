@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using HelloWorld.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ public class EFSqliteContext : DbContext
         // });
 
         //EF Model relationship
-        modelBuilder.Entity<Book>().HasOne(b => b.Genre).WithMany().HasForeignKey(b => b.GenreId);
+        modelBuilder.Entity<Book>().HasOne(b => b.Genre).WithMany().HasForeignKey(b => b.GenreId).OnDelete(DeleteBehavior.Restrict);
     }
 }
 
@@ -46,8 +47,20 @@ public class Library
             GenreId = matchedGenre != null ? matchedGenre.Id : -1
         };
 
-        context.Book.Add(book);
-        return context.SaveChanges();
+        var duplicateBook = context.Book.Where(b=> b.Title.ToLower() == title.ToLower() 
+                                                && b.Author.ToLower() == author.ToLower()
+                                                && b.PublicationYear == publicationYear).ToList();
+
+        if (duplicateBook.Count() > 0)
+        {
+            Console.WriteLine("No new book created in the library. A book with this title, author, and publication year already exists.");
+            return 0;
+        }
+        else
+        {
+            context.Book.Add(book);
+            return context.SaveChanges(); 
+        }
     }
 
     public int InsertGenre(string name)
@@ -59,14 +72,24 @@ public class Library
             Name = $"{name}"
         };
 
-        context.Genre.Add(genre);
-        return context.SaveChanges();
+        var duplicateGenre = context.Genre.Where(g=> g.Name.ToLower() == name.ToLower()).ToList();
+
+        if (duplicateGenre.Count() > 0)
+        {
+            Console.WriteLine("No new Genre created in the library. A Genre by this name already exists.");
+            return 0;
+        }
+        else
+        {
+            context.Genre.Add(genre);
+            return context.SaveChanges();
+        }
     }
 
     public List<Book> SelectByAuthor(string author)
     {
         using var context = new EFSqliteContext();
-        var bookSearch = context.Book.Where(b => b.Author == author).ToList();
+        var bookSearch = context.Book.Include(g=> g.Genre).Where(b => b.Author == author).ToList();
 
         if(bookSearch.Count == 0)
         {
@@ -74,5 +97,14 @@ public class Library
         }
         
         return bookSearch;
+    }
+
+    public int DeleteBook(int id)
+    {
+        using var context = new EFSqliteContext();
+
+        var rowsAffected = context.Book.Where(b=> b.Id == id).ExecuteDelete();
+
+        return rowsAffected;
     }
 }
