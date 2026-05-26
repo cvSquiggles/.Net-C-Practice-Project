@@ -19,7 +19,7 @@ namespace HelloWorld
 
         static void Main(string[] args)
         {
-            IConfiguration config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("AppSettings.json").Build();
+            //IConfiguration config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("AppSettings.json").Build();
             //Build AppSettings.json configuration
 
             Book firstBook = new Book()
@@ -29,14 +29,14 @@ namespace HelloWorld
                 PublicationYear = 1972
             };
 
-            SqliteDBTools dbTool = new SqliteDBTools(config);
+            //SqliteDBTools dbTool = new SqliteDBTools(config);
 
-            List<(string Title, string Author, int PublicationYear)> sqlSearchResult = dbTool.SelectAllBooks();
+            //List<(string Title, string Author, int PublicationYear)> sqlSearchResult = dbTool.SelectAllBooks();
 
-            for (int i = 0; i < sqlSearchResult.Count(); i++)
-            {
-                Console.WriteLine("Manual search result: " + sqlSearchResult[i]);
-            }
+            //for (int i = 0; i < sqlSearchResult.Count(); i++)
+            //{
+                //Console.WriteLine("Manual search result: " + sqlSearchResult[i]);
+            //}
 
             //dbTool.insertBook("Die Another Day", "James Bond", 1972);
             //dbTool.insertBook("Live and Let Die", "James Bond", 1984);

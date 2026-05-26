@@ -4,16 +4,19 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Configuration;
 
 namespace HelloWorld.Data;
 
 //DBContext class
 public class EFSqliteContext : DbContext
 {
+    private IConfiguration _config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("AppSettings.json").Build();
+   
     public DbSet<Book> Book { get; set; }
     public DbSet<Genre> Genre { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder options) 
-    => options.UseSqlite("Data Source=SqliteDB.db");
+    => options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
