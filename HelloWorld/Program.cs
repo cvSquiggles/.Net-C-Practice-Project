@@ -9,6 +9,9 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore.Storage.Json;
+using System.Text.Json;
+using HellowWorld.Data;
 
 namespace HelloWorld
 {
@@ -30,8 +33,7 @@ namespace HelloWorld
             //builder.Host.UseSerilog();
 
 
-            //IConfiguration config = new ConfigurationBuilder().AddJsonFile("AppSettings.json").Build();
-            //Build AppSettings.json configuration
+            IConfiguration config = new ConfigurationBuilder().AddJsonFile("AppSettings.json").Build();
 
             Book firstBook = new Book()
             {
@@ -60,22 +62,39 @@ namespace HelloWorld
             //    Console.WriteLine(queryResult[i]);
             //}
 
+            //JSONDataTools.ParseAndUploadGenres(File.ReadAllText("./Import/JSON/genres.json"));
+            //JSONDataTools.ParseAndUploadBooks(File.ReadAllText("./Import/JSON/books.json"));
+
             var library = new Library();
+
+            List<Book> searchResult = library.SelectAllBooks();
+
+            Console.WriteLine("-----------------------------------------------------------");
+            foreach(Book x in searchResult)
+            {
+                Console.WriteLine(x);
+                Console.WriteLine("-----------------------------------------------------------");
+            }
+
+            // var context = new SqliteDBTools(config);
+            // context.insertGenre(-1, "Unknown");
+
             //library.InsertGenre("Film-Adaptation");
 
             //library.InsertBook("Die Another Day", "James Bond", "James Bond refuses to die on THIS day.", 1972, "Thriller");
             //library.InsertBook("Casino Royale", "James Bond", "James Bond goes to the casino hoping to win big.", 2007, "Film-Adaptation");
 
-            List<Book> searchResult = library.SelectByAuthor("James Bondi");
 
-            searchResult = library.SelectByAuthor("James Bond");
+            // List<Book> searchResult = library.SelectByAuthor("James Bondi");
 
-            Console.WriteLine("-----------------------");
-            for (int i = 0; i < searchResult.Count(); i++)
-            {
-                Console.WriteLine(searchResult[i]);
-                Console.WriteLine("-----------------------");
-            }
+            // searchResult = library.SelectByAuthor("James Bond");
+
+            // Console.WriteLine("-----------------------");
+            // for (int i = 0; i < searchResult.Count(); i++)
+            // {
+            //     Console.WriteLine(searchResult[i]);
+            //     Console.WriteLine("-----------------------");
+            // }
         }
     }
 }

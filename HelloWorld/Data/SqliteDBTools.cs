@@ -46,6 +46,23 @@ public class SqliteDBTools(IConfiguration config)
         }
     }
 
+    public int insertGenre(int genreId, string name)
+    {
+            using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+
+            var insertCmd = connection.CreateCommand();
+            insertCmd.CommandText = "INSERT INTO Genre (Id, Name) VALUES ($genreId, $name)";
+            insertCmd.Parameters.AddWithValue("$genreId", genreId);
+            insertCmd.Parameters.AddWithValue("$name", name);
+            int rowsAdded = insertCmd.ExecuteNonQuery();
+
+            connection.Close();
+            return rowsAdded;
+        }
+    }
+
     //Type generic select statement method
     public List<T> ExecuteQuery<T>(string query, Func<SqliteDataReader, T> mapper, Dictionary<string, object>? parameters = null)
     {

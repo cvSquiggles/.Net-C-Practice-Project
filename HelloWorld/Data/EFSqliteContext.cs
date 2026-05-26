@@ -68,6 +68,35 @@ public class Library
         }
     }
 
+    public int InsertBookWithGenreId(string title, string author, string description, int publicationYear, int genreId)
+    {
+        using var context = new EFSqliteContext();
+
+        var book = new Book
+        {
+            Title = title,
+            Author = author,
+            Description = description,
+            PublicationYear = publicationYear,
+            GenreId = genreId
+        };
+
+        var duplicateBook = context.Book.Where(b=> b.Title.ToLower() == title.ToLower() 
+                                                && b.Author.ToLower() == author.ToLower()
+                                                && b.PublicationYear == publicationYear).ToList();
+
+        if (duplicateBook.Count() > 0)
+        {
+            Console.WriteLine("No new book created in the library. A book with this title, author, and publication year already exists.");
+            return 0;
+        }
+        else
+        {
+            context.Book.Add(book);
+            return context.SaveChanges();
+        }
+    }
+
     public int InsertGenre(string name)
     {
         using var context = new EFSqliteContext();
@@ -91,6 +120,47 @@ public class Library
         }
     }
 
+    public List<Genre> SelectAllGenres()
+    {
+        var genreSearch = new List<Genre>();
+        try
+        {
+            using var context = new EFSqliteContext();
+            genreSearch = context.Genre.ToList();
+
+            if(genreSearch.Count == 0)
+            {
+                throw new KeyNotFoundException("The genre data table returned 0 records!");
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error(DateTime.Now.ToShortDateString().Replace("/", "-") + ": " + e);
+        }
+        return genreSearch;
+    }
+
+    public int SelectGenreIdByName(string name)
+    {
+        Genre targetGenre = new Genre();
+        try
+        {
+            using var context = new EFSqliteContext();
+            targetGenre = context.Genre.Where(g=> g.Name.ToLower().Equals(name.ToLower())).First();
+            Console.WriteLine(name + " <-- | --> " + targetGenre.Name + " - " + targetGenre.Id);
+
+            if(targetGenre != null)
+            {
+                return targetGenre.Id;
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error(DateTime.Now.ToShortDateString().Replace("/", "-") + ": " + e);
+        }
+        return -1;
+    }
+
     public List<Book> SelectByAuthor(string author)
     {
         var bookSearch = new List<Book>();
@@ -104,19 +174,32 @@ public class Library
                 throw new KeyNotFoundException($"No books found by the author: {author}");
             }
             
-            return bookSearch;
         }
         catch (KeyNotFoundException e)
         {
-            // string logName = "./Logs/log"+DateTime.Now.ToShortDateString().Replace("/", "-")+".txt";
-            // //Write error output to log.txt
-            // using StreamWriter openFile = new(logName, append: true);
-            // openFile.WriteLine(DateTime.Now + ": " + e + "\n");
-            // openFile.Close();
             Log.Error(DateTime.Now.ToShortDateString().Replace("/", "-") + ": " + e);
-
-            return bookSearch;
         }
+        return bookSearch;
+    }
+
+    public List<Book> SelectAllBooks()
+    {
+        var bookSearch = new List<Book>();
+        try
+        {
+            using var context = new EFSqliteContext();
+            bookSearch = context.Book.Include(g=> g.Genre).ToList();
+
+            if(bookSearch.Count == 0)
+            {
+                throw new KeyNotFoundException("The book data table returned 0 records!");
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error(DateTime.Now.ToShortDateString().Replace("/", "-") + ": " + e);
+        }
+        return bookSearch;
     }
 
     public int DeleteBook(int id)
@@ -124,6 +207,15 @@ public class Library
         using var context = new EFSqliteContext();
 
         var rowsAffected = context.Book.Where(b=> b.Id == id).ExecuteDelete();
+
+        return rowsAffected;
+    }
+
+    public int DeleteGenre(int id)
+    {
+        using var context = new EFSqliteContext();
+
+        var rowsAffected = context.Genre.Where(g=> g.Id == id).ExecuteDelete();
 
         return rowsAffected;
     }

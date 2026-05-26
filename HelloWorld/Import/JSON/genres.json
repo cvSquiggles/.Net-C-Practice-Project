@@ -1,0 +1,11 @@
+[
+  { "Name": "Literary Fiction" },
+  { "Name": "Dystopian Fiction" },
+  { "Name": "Fantasy" },
+  { "Name": "Science Fiction" },
+  { "Name": "Mystery" },
+  { "Name": "Thriller" },
+  { "Name": "Horror" },
+  { "Name": "Romance" },
+  { "Name": "Non-Fiction" }
+]
