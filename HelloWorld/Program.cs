@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
+using Serilog;
+using Microsoft.AspNetCore.Builder;
 
 namespace HelloWorld
 {
@@ -19,6 +21,15 @@ namespace HelloWorld
 
         static void Main(string[] args)
         {
+            //var builder = WebApplication.CreateBuilder(args);
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File("Logs/error-log.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            //builder.Host.UseSerilog();
+
+
             //IConfiguration config = new ConfigurationBuilder().AddJsonFile("AppSettings.json").Build();
             //Build AppSettings.json configuration
 
@@ -56,6 +67,8 @@ namespace HelloWorld
             //library.InsertBook("Casino Royale", "James Bond", "James Bond goes to the casino hoping to win big.", 2007, "Film-Adaptation");
 
             List<Book> searchResult = library.SelectByAuthor("James Bondi");
+
+            searchResult = library.SelectByAuthor("James Bond");
 
             Console.WriteLine("-----------------------");
             for (int i = 0; i < searchResult.Count(); i++)

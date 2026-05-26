@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace HelloWorld.Data;
 
@@ -106,11 +108,12 @@ public class Library
         }
         catch (KeyNotFoundException e)
         {
-            string logName = "./Logs/log"+DateTime.Now.ToShortDateString().Replace("/", "-")+".txt";
-            //Write error output to log.txt
-            using StreamWriter openFile = new(logName, append: true);
-            openFile.WriteLine(DateTime.Now + ": " + e + "\n");
-            openFile.Close();
+            // string logName = "./Logs/log"+DateTime.Now.ToShortDateString().Replace("/", "-")+".txt";
+            // //Write error output to log.txt
+            // using StreamWriter openFile = new(logName, append: true);
+            // openFile.WriteLine(DateTime.Now + ": " + e + "\n");
+            // openFile.Close();
+            Log.Error(DateTime.Now.ToShortDateString().Replace("/", "-") + ": " + e);
 
             return bookSearch;
         }
