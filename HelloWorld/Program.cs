@@ -19,7 +19,7 @@ namespace HelloWorld
 
         static void Main(string[] args)
         {
-            //IConfiguration config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("AppSettings.json").Build();
+            //IConfiguration config = new ConfigurationBuilder().AddJsonFile("AppSettings.json").Build();
             //Build AppSettings.json configuration
 
             Book firstBook = new Book()
@@ -55,7 +55,7 @@ namespace HelloWorld
             //library.InsertBook("Die Another Day", "James Bond", "James Bond refuses to die on THIS day.", 1972, "Thriller");
             //library.InsertBook("Casino Royale", "James Bond", "James Bond goes to the casino hoping to win big.", 2007, "Film-Adaptation");
 
-            List<Book> searchResult = library.SelectByAuthor("James Bond");
+            List<Book> searchResult = library.SelectByAuthor("James Bondi");
 
             Console.WriteLine("-----------------------");
             for (int i = 0; i < searchResult.Count(); i++)

@@ -11,7 +11,7 @@ namespace HelloWorld.Data;
 //DBContext class
 public class EFSqliteContext : DbContext
 {
-    private IConfiguration _config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("AppSettings.json").Build();
+    private IConfiguration _config = new ConfigurationBuilder().AddJsonFile("AppSettings.json").Build();
    
     public DbSet<Book> Book { get; set; }
     public DbSet<Genre> Genre { get; set; }
@@ -91,15 +91,30 @@ public class Library
 
     public List<Book> SelectByAuthor(string author)
     {
-        using var context = new EFSqliteContext();
-        var bookSearch = context.Book.Include(g=> g.Genre).Where(b => b.Author == author).ToList();
-
-        if(bookSearch.Count == 0)
+        var bookSearch = new List<Book>();
+        try
         {
-            throw new KeyNotFoundException($"No books found by the author: {author}");
+            using var context = new EFSqliteContext();
+            bookSearch = context.Book.Include(g=> g.Genre).Where(b => b.Author == author).ToList();
+
+            if(bookSearch.Count == 0)
+            {
+                throw new KeyNotFoundException($"No books found by the author: {author}");
+            }
+            
+            return bookSearch;
         }
-        
-        return bookSearch;
+        catch (KeyNotFoundException e)
+        {
+            string logName = "log"+DateTime.Now.ToShortDateString()+".txt";
+            logName = logName.Replace("/", "-");
+            //Write error output to log.txt
+            using StreamWriter openFile = new(logName, append: true);
+            openFile.WriteLine(DateTime.Now + ": " + e + "\n");
+            openFile.Close();
+
+            return bookSearch;
+        }
     }
 
     public int DeleteBook(int id)
