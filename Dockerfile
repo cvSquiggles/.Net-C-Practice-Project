@@ -22,4 +22,5 @@ RUN dotnet publish "HelloWorld.csproj" -c $configuration -o /app/publish /p:UseA
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY SQLiteDB.db .
 ENTRYPOINT ["dotnet", "HelloWorld.dll"]
