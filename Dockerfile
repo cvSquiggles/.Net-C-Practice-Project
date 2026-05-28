@@ -7,8 +7,8 @@ ENV ASPNETCORE_URLS=http://+:5000
 FROM mcr.microsoft.com/dotnet/sdk:10.0-nanoserver-ltsc2022 AS build
 ARG configuration=Release
 WORKDIR /src
-COPY ["HelloWorld/HelloWorld.csproj", "HelloWorld/"]
-RUN dotnet restore "HelloWorld\HelloWorld.csproj"
+COPY ["HelloWorld.csproj", "./"]
+RUN dotnet restore "HelloWorld.csproj"
 COPY . .
 WORKDIR "/src/HelloWorld"
 RUN dotnet build "HelloWorld.csproj" -c $configuration -o /app/build
