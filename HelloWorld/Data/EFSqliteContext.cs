@@ -13,6 +13,17 @@ namespace HelloWorld.Data;
 //DBContext class
 public class EFSqliteContext : DbContext
 {
+
+    public EFSqliteContext()
+    {
+        
+    }
+    
+    public EFSqliteContext(DbContextOptionsBuilder options)
+    {
+        
+    }
+
     private IConfiguration _config = new ConfigurationBuilder().AddJsonFile("AppSettings.json").Build();
    
     public DbSet<Book> Book { get; set; }
