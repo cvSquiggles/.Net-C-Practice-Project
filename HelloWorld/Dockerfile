@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-nanoserver-ltsc2022 AS base
+WORKDIR /app
+EXPOSE 5000
+
+ENV ASPNETCORE_URLS=http://+:5000
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0-nanoserver-ltsc2022 AS build
+ARG configuration=Release
+WORKDIR /src
+COPY ["HelloWorld/HelloWorld.csproj", "HelloWorld/"]
+RUN dotnet restore "HelloWorld\HelloWorld.csproj"
+COPY . .
+WORKDIR "/src/HelloWorld"
+RUN dotnet build "HelloWorld.csproj" -c $configuration -o /app/build
+
+FROM build AS publish
+ARG configuration=Release
+RUN dotnet publish "HelloWorld.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "HelloWorld.dll"]
