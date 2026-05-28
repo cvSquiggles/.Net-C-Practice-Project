@@ -48,6 +48,7 @@ namespace HelloWorld.Migrations
                     b.Description,
                     b.PublicationYear,
                     COALESCE(g.Name, 'Unknown'),
+                    'Unknown',
                     datetime('now'),
                     datetime('now')
                 FROM Book_Temp b
