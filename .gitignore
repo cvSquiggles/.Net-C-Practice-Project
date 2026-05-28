@@ -1,7 +1,31 @@
 # Ignore directories
-HelloWorld/obj/Debug/
-HelloWorld/bin/Debug/
-HelloWorld/Logs/*
+obj/
+bin/
+Logs/*
+
+# VS Code
+.vscode/
+.vs/
+*.user
+
+# dotnet stuff
+*.suo
+*.userprefs
+project.nuget.cache
+*.nuget.dgspec.json
+*.nuget.g.props
+*.nuget.g.targets
+
+# OS
+.DS_Store
+Thumbs.db
+
+#Environment
+appsettings.Development.json
+*.Environment
+
+#Docker
+compose.debug.yaml
 
 
 # Ignore files
