@@ -22,14 +22,7 @@ public class EFSqliteContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //EF Model Constraint example
-        // modelBuilder.Entity<Book>(entity =>
-        // {
-        //     entity.Property(b => b.Title).HasMaxLength(200);
-        // });
-
-        //EF Model relationship
-        modelBuilder.Entity<Book>().HasOne(b => b.Genre).WithMany().HasForeignKey(b => b.GenreId).OnDelete(DeleteBehavior.Restrict);
+        //Removed this foreign key EF relationship since the Book table absorbed the Genre table --modelBuilder.Entity<Book>().HasOne(b => b.Genre).WithMany().HasForeignKey(b => b.GenreId).OnDelete(DeleteBehavior.Restrict);
     }
 }
 
@@ -40,8 +33,8 @@ public class Library
     {
         using var context = new EFSqliteContext();
 
-        var matchedGenre = context.Genre.FirstOrDefault(g => g.Name.ToLower() == genre.ToLower())
-            ?? throw new KeyNotFoundException($"Genre '{genre}' not found.");
+        /*Removed genre check, since it's just stored directly in the book table as a string now --var matchedGenre = context.Genre.FirstOrDefault(g => g.Name.ToLower() == genre.ToLower())
+            ?? throw new KeyNotFoundException($"Genre '{genre}' not found."); */
 
         var book = new Book
         {
@@ -49,7 +42,7 @@ public class Library
             Author = author,
             Description = description,
             PublicationYear = publicationYear,
-            GenreId = matchedGenre != null ? matchedGenre.Id : -1
+            Genre = genre
         };
 
         var duplicateBook = context.Book.Where(b=> b.Title.ToLower() == title.ToLower() 
@@ -68,34 +61,35 @@ public class Library
         }
     }
 
-    public int InsertBookWithGenreId(string title, string author, string description, int publicationYear, int genreId)
-    {
-        using var context = new EFSqliteContext();
+    //Commented out since it's causing errors trying to build the web app, and genreId doesn't even exist anymore!
+    // public int InsertBookWithGenreId(string title, string author, string description, int publicationYear, int genreId)
+    // {
+    //     using var context = new EFSqliteContext();
 
-        var book = new Book
-        {
-            Title = title,
-            Author = author,
-            Description = description,
-            PublicationYear = publicationYear,
-            GenreId = genreId
-        };
+    //     var book = new Book
+    //     {
+    //         Title = title,
+    //         Author = author,
+    //         Description = description,
+    //         PublicationYear = publicationYear,
+    //         GenreId = genreId
+    //     };
 
-        var duplicateBook = context.Book.Where(b=> b.Title.ToLower() == title.ToLower() 
-                                                && b.Author.ToLower() == author.ToLower()
-                                                && b.PublicationYear == publicationYear).ToList();
+    //     var duplicateBook = context.Book.Where(b=> b.Title.ToLower() == title.ToLower() 
+    //                                             && b.Author.ToLower() == author.ToLower()
+    //                                             && b.PublicationYear == publicationYear).ToList();
 
-        if (duplicateBook.Count() > 0)
-        {
-            Console.WriteLine("No new book created in the library. A book with this title, author, and publication year already exists.");
-            return 0;
-        }
-        else
-        {
-            context.Book.Add(book);
-            return context.SaveChanges();
-        }
-    }
+    //     if (duplicateBook.Count() > 0)
+    //     {
+    //         Console.WriteLine("No new book created in the library. A book with this title, author, and publication year already exists.");
+    //         return 0;
+    //     }
+    //     else
+    //     {
+    //         context.Book.Add(book);
+    //         return context.SaveChanges();
+    //     }
+    // }
 
     public int InsertGenre(string name)
     {
