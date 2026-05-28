@@ -21,6 +21,24 @@ public class EFSqliteContext : DbContext
    
     public DbSet<Book> Book { get; set; }
     public DbSet<Genre> Genre { get; set; }
+
+    public override int SaveChanges()
+    {
+        var entriesUpdated = ChangeTracker.Entries<Book>()
+            .Where(b=> b.State == EntityState.Added || b.State == EntityState.Modified);
+
+        foreach (var entry in entriesUpdated)
+        {
+            entry.Entity.LastUpdateStamp = DateTime.UtcNow;
+
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.DateAddedStamp = DateTime.UtcNow;
+            }
+        }
+        
+        return base.SaveChanges();
+    }
     
     //Removed OnModelCreation and OnConfiguring, since these should be handled in the Program.cs where we AddDBContext.
 }
