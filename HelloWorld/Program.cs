@@ -44,21 +44,21 @@ namespace HelloWorld
             app.Logger.LogInformation("Application started successfully, does logging work?");
 
             //Commented out for reference --Testing the EFSqlite context through the WebApp service, using Genre to test since I haven't fixed the Book database table yet, but Genre insert should still be intact
-            // using (var scope = app.Services.CreateScope())
-            // {
-            //     var context = scope.ServiceProvider.GetRequiredService<EFSqliteContext>();
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<EFSqliteContext>();
 
-            //     var newGenre = new Genre
-            //     {
-            //         Name = "Test-Genre"
-            //     };
+                var newGenre = new Genre
+                {
+                    Name = "Test-Genre2"
+                };
 
-            //     context.Genre.Add(newGenre);
-            //     if (context.SaveChanges() > 0)
-            //     {
-            //         app.Logger.LogInformation("Genre added to the database successfully.");
-            //     }
-            // }
+                context.Genre.Add(newGenre);
+                if (context.SaveChanges() > 0)
+                {
+                    app.Logger.LogInformation("Genre added to the database successfully.");
+                }
+            }
 
             app.MapControllerRoute(
                 name: "default",
