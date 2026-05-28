@@ -1,17 +1,6 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using HelloWorld.Models;
-using HelloWorld.Data;
-using System.Security.Cryptography.X509Certificates;
-using System.Runtime.CompilerServices;
+﻿using HelloWorld.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Configuration;
 using Serilog;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore.Storage.Json;
-using System.Text.Json;
-using HellowWorld.Data;
 
 namespace HelloWorld
 {
@@ -39,7 +28,7 @@ namespace HelloWorld
 
             var app = builder.Build(); //Build the web app
 
-            app.MapGet("/", () => "Hello World3!"); //Set root path to return the classic starter text message :)
+            //app.MapGet("/", () => "Hello World3!"); //Set root path to return the classic starter text message :)
 
             app.Logger.LogInformation("Application started successfully, does logging work?");
 
