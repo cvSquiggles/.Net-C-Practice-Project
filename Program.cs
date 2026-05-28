@@ -39,7 +39,7 @@ namespace HelloWorld
 
             var app = builder.Build(); //Build the web app
 
-            app.MapGet("/", () => "Hello World!"); //Set root path to return the classic starter text message :)
+            app.MapGet("/", () => "Hello World3!"); //Set root path to return the classic starter text message :)
 
             app.Logger.LogInformation("Application started successfully, does logging work?");
 
