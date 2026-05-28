@@ -36,6 +36,8 @@ namespace HelloWorld
 
             app.MapGet("/", () => "Hello World!"); //Set root path to return the classic starter text message :)
 
+            app.Logger.LogInformation("Application started successfully, does logging work?");
+
             app.Run();
         }
     }
