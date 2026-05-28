@@ -1,0 +1,35 @@
+@{/*Default shared layout initially generated using AI*/}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="widt=device-width, intiial-scale=1.0" />
+        <title>@ViewData["Title"] - Library</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="~/css/site.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="header-inner">
+                <a href="/Books" class="site-title">
+                    <span class="title-the">The</span>
+                    <span class="title-library">Library</span>
+                </a>
+                <nav class="site-nav">
+                    <a href="/Books">Collection</a>
+                    <a href="/Books/Create" class="nav-add">+ Add Book</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="site-main">
+            @RenderBody()
+        </main>
+
+        <footer class="site-footer">
+            <span>My personal library</span>
+        </footer>
+    </body>
+</html>
