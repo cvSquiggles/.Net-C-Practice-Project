@@ -35,28 +35,35 @@ namespace HelloWorld
             //Add EFSqlite context to the web app as a service
             builder.Services.AddDbContext<EFSqliteContext>(options=> options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddControllersWithViews(); //Enable MVC services and Razor view which I think is what is used for rendering?
+
             var app = builder.Build(); //Build the web app
 
             app.MapGet("/", () => "Hello World!"); //Set root path to return the classic starter text message :)
 
             app.Logger.LogInformation("Application started successfully, does logging work?");
 
-            //Testing the EFSqlite context through the WebApp service, using Genre to test since I haven't fixed the Book database table yet, but Genre insert should still be intact
-            using (var scope = app.Services.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<EFSqliteContext>();
+            //Commented out for reference --Testing the EFSqlite context through the WebApp service, using Genre to test since I haven't fixed the Book database table yet, but Genre insert should still be intact
+            // using (var scope = app.Services.CreateScope())
+            // {
+            //     var context = scope.ServiceProvider.GetRequiredService<EFSqliteContext>();
 
-                var newGenre = new Genre
-                {
-                    Name = "Test-Genre"
-                };
+            //     var newGenre = new Genre
+            //     {
+            //         Name = "Test-Genre"
+            //     };
 
-                context.Genre.Add(newGenre);
-                if (context.SaveChanges() > 0)
-                {
-                    app.Logger.LogInformation("Genre added to the database successfully.");
-                }
-            }
+            //     context.Genre.Add(newGenre);
+            //     if (context.SaveChanges() > 0)
+            //     {
+            //         app.Logger.LogInformation("Genre added to the database successfully.");
+            //     }
+            // }
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Books}/{action=Index}/{id?}"
+            );
 
             app.Run();
         }
