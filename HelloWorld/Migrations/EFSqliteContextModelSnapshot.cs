@@ -60,7 +60,7 @@ namespace HelloWorld.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Book");
+                    b.ToTable("Book", (string)null);
                 });
 
             modelBuilder.Entity("HelloWorld.Models.Genre", b =>
@@ -75,7 +75,7 @@ namespace HelloWorld.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genre");
+                    b.ToTable("Genre", (string)null);
                 });
 #pragma warning restore 612, 618
         }

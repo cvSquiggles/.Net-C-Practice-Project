@@ -1,0 +1,11 @@
+//This is a quick view thrown together for the deprecated Genre table to test Views and route mapping
+
+@model IEnumerable<HelloWorld.Models.Book>
+
+<h1>Books</h1>
+<ul>
+    @foreach (var book in Model)
+    {
+        <li>Id: @book.Id, Name: @book.Title, Author: @book.Author (@book.PublicationYear)</li>
+    }
+</ul>
